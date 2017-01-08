@@ -5,6 +5,7 @@ This sketch is based on kakopappa Wemo switch and Shirriff's IR code library, to
  3. Miele VaccumCleaner     
  4. IHC system
  5. Light Bulbs
+ 
  More to come...
  
 Some IR codes are RC5 and some are RAW.    
