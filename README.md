@@ -2,12 +2,10 @@
 This sketch is based on kakopappa Wemo switch and Shirriff's IR code library, to transmit commands for    
  1. Samsung TV    
  2. Marantz Amplifier    
- 3. Miele VaccumCleaner     
+ 3. Miele VaccumCleaner
  4. IHC system
  5. Light Bulbs
- 
- More to come...
- 
+More to come...
 Some IR codes are RC5 and some are RAW.    
 Wifi part (Witty) ESP8266 will receive commands from Alexa and parse them to the IR remote part.
 
