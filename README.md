@@ -11,7 +11,7 @@ More to come...
 Some IR codes are RC5 and some are RAW.    
 Wifi part (Witty) ESP8266 will receive commands from Alexa and parse them to the IR remote part.
 
-The goal is to have a sketch which can send commands to different diveces such as TV, Radio, Amplifier, Light, Dimmers aso
+The goal is to have a sketch which can send commands to different devices such as TV, Radio, Amplifier, Light, Dimmers aso
 from the the Witty ESP8266 with a IR diode attached (or a series).
 
 Your are more than welcome to use the code, and change it to your needs. 
