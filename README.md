@@ -1,11 +1,12 @@
 # Wemo-for-Alexa
-This sketch is based on kakopappa Wemo switch and Shirriff's IR code library, to transmit commands for    
+This sketch is based on kakopappa Wemo switch and Shirriff's IR code library. It will transmit commands for    
  1. Samsung TV    
  2. Marantz Amplifier    
  3. Miele VaccumCleaner
  4. IHC system
  5. Light Bulbs
-
+ 6. Wemo dimmers
+ 
 More to come...
 
 Some IR codes are RC5 and some are RAW.    
