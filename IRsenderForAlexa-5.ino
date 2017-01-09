@@ -63,12 +63,11 @@ int Indicator_PIN = 15;       // Red indicator sender LED
 int Blue_LED      = 13;
 int Green_LED     = 12;
 
-// int incomingByte = 'z';      // Incomming data from serial input (debug screen). Init to 'z' (decimal value for z) 
-
-// prototypes
+// Call Connect to Wifi
 boolean connectWifi();
-
-/*/Declare on/off callbacks                */
+//////////////////////////////////////////////////////////////////
+// Declare on/off callbacks  
+//////////////////////////////////////////////////////////////////
 /* Declare Samsung TV callbacks  (on-off)  */
 void SamsungTVOn();         //Samsung TV toggle ON/OFF
 void SamsungTVOff();        //Samsung TV toggle ON/OFF
@@ -80,8 +79,6 @@ void SamsungVolumeDown();   //Samsung TV Volume down
 void SamsungCH1On();        //Samsung TV Ch 1
 void SamsungCH2On();        //Samsung TV Ch 2
 void SamsungCH3On();        //Samsung TV Ch 3
-
-
 /* Declare Marantz callbacks  (on-off) */
 void AmplifierOn();           //Amplifier ON
 void AmplifierOff();          //Amplifier OFF
@@ -95,7 +92,6 @@ void AmplifierScourceUp();    //Amplifier Source up
 void AmplifierScourceDown();  //Amplifier Source down
 void AmplifierMuteOn();       //Amplifier Mute toggle
 void AmplifierMuteOff();      //Amplifier Mute toggle
-
 /* Declare Mile callbacks  (on-off) */
 void VacuumCleanerOn();       //Vaccum Cleaner toggle ON
 void VacuumCleanerCornerOn(); //Corners ON
@@ -133,6 +129,9 @@ Switch *VacuumCleaner       = NULL;
 Switch *VacuumCleanerCorner = NULL;      
 Switch *VacuumCleanerGo     = NULL;   
 Switch *VacuumCleanerBase   = NULL;   
+//Define dimmers for light
+//Dimmer *KitchenLight       = NULL;        
+//Dimmer *OfficeLight        = NULL;
 
 /*  
 LDR = A0;
@@ -145,13 +144,11 @@ D5  GPIO 14
 D6  GPIO 12 Green LED
 D7  GPIO 13 Blue LED
 D8  GPIO 15 Red LED
-   
 */
 
 void setup()
 {
   Serial.begin(115200);            // Initial for ESP8266
-  //Serial.begin(9600);            //this was initial for the IR part
    
   // Initialise wifi connection
   wifiConnected = connectWifi();
@@ -223,7 +220,7 @@ void setup()
  
 void loop()
 {
-	 if(wifiConnected){
+ if(wifiConnected){
       upnpBroadcastResponder.serverLoop();
       
       SamsungTV->serverLoop();
@@ -249,21 +246,22 @@ void loop()
       VacuumCleanerGo->serverLoop();
       VacuumCleanerBase->serverLoop();
 	 }
-   //SerialCase();  // check input from serialTX and go to IR part
 }
 
+//////////////////////////////////////////////////////////////////
 // Here comes the IR part
-// Input from serial TX, and case sorting by the input number.
+// Input from the Callback, and case sorting by the input number.
+//////////////////////////////////////////////////////////////////
 void SerialCase(int ValueforIRcodes)
 {
 //SAMSUNG CODES
 #define POWER         0xE0E040BF       
-#define Mute          0xE0E0FFFF //Not confirmed
+#define Mute          0xE0E0F00F 
 #define CH_UP         0xE0E048B7     
 #define CH_DOWN       0xE0E008F7     
 #define VOL_UP        0xE0E0E01F     
 #define VOL_DOWN      0xE0E0D02F     
-#define CH0           0xE0E0FFFF //Not confirmed
+#define CH0           0xE0E08877
 #define CH1           0xE0E020DF     
 #define CH2           0xE0E0A05F
 #define CH3           0xE0E0609F
@@ -521,19 +519,29 @@ ValueforIRcodes = 'z'; //Resetter værdien.
 delay(200);  //LED will light a bit longer
 }
 
+//////////////////////////////////////////////////////////////////
+// Here comes the Dimmer part
+// Input from the Callback, will redirect to this function
+//////////////////////////////////////////////////////////////////
+void DimmerSet(int ValueforDimmer)
+{
+// Code will be added
+//          Serial.println("Dimmer 1 Down, sending");
+//          irsend.sendSAMSUNG(DIM_DOWN, DIM_BITS); 
+}
 
-/* Here comes all the code for Alexa to do 
- * the requered instructions.
- * Jump to serialCase with parameter. This will send the IR code
- */
-
+//////////////////////////////////////////////////////////////////
+// Here comes all the code for Alexa to do 
+// the requered instructions.
+// Jump to serialCase with parameter. This will send the IR code
+//////////////////////////////////////////////////////////////////
 /* Samsung TV */
 void SamsungTVOn()         { SerialCase(1);   };  //Samsung TV on/off
 void SamsungMuteOn()       { SerialCase(2);   };  //Samsung TV Mute
-void SamsungChannelUp()  { SerialCase(3);   };    //Samsung TV Channal up
-void SamsungChannelDown(){ SerialCase(4);   };    //Samsung TV Channal Down
-void SamsungVolumeUp()   { SerialCase(5);   };    //Samsung TV Volume up
-void SamsungVolumeDown() { SerialCase(6);   };    //Samsung TV Volume down
+void SamsungChannelUp()    { SerialCase(3);   };    //Samsung TV Channal up
+void SamsungChannelDown()  { SerialCase(4);   };    //Samsung TV Channal Down
+void SamsungVolumeUp()     { SerialCase(5);   };    //Samsung TV Volume up
+void SamsungVolumeDown()   { SerialCase(6);   };    //Samsung TV Volume down
 void SamsungCH1On()        { SerialCase(7);   };  //Samsung TV Ch 1
 void SamsungCH2On()        { SerialCase(8);   };  //Samsung TV Ch 2
 void SamsungCH3On()        { SerialCase(9);   };  //Samsung TV Ch 3
@@ -560,8 +568,11 @@ void VacuumCleanerBaseOn()  { SerialCase('r');   }; //Return to home
 
 
 
+//////////////////////////////////////////////////////////////////
 // Heres comes the Wifi connect part
 // connect to wifi – returns true if successful or false if not
+// If connect is True, the green LED will not turn off
+//////////////////////////////////////////////////////////////////
 boolean connectWifi(){
   boolean state = true;
   int i = 0;
@@ -597,7 +608,7 @@ boolean connectWifi(){
   else {
     Serial.println("");
     Serial.println("Connection failed.");
-    digitalWrite(Green_LED, LOW);  // Everything is not OK ...pls repeat the start sequence again
+    digitalWrite(Green_LED, LOW);  // Hmm no connect ...pls repeat the start sequence again
   }
   
   return state;
