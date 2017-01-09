@@ -18,3 +18,6 @@ from the the Witty ESP8266 with a IR diode attached (or a series).
 Your are more than welcome to use the code, and change it to your needs. 
 The project will be an ongoing process and ekstra devices will be added all the time. 
 For now only switch on/off is working. Be aware of the amount of switches, it can only be 14 on one Witty.
+
+9/1-17 The Wemo Dimmer is just launched https://www.cnet.com/products/belkin-wemo-dimmer-wi-fi-light-switch/preview/ 
+it's going to be exiting what's new in the prococol (dimming part)
